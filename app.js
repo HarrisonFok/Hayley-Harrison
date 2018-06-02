@@ -115,6 +115,34 @@ app.get("/logout", function(req, res){
 	res.redirect("/");
 });	
 
+// ===============================
+// BLOGS ROUTES
+// ===============================
+
+// index
+app.get("/photos/blogs", function(req, res){
+	res.render("photos/blogs");
+});
+
+// new 
+app.get("/photos/blogs/new", function(req, res){
+	res.render("photos/new");
+});
+
+// create
+app.post("/photos/blogs", function(req, res){
+	console.log(req.body.blog);
+	// console.log(req.body.blog.title);
+	Blog.create(req.body.blog, function(err, newBlog){
+		if(err) {
+			res.render("new");
+		} else {
+			// redirect to index
+			res.redirect("blogs");
+		}
+	});
+});
+
 function isLoggedIn(req, res, next){
 	if(req.isAuthenticated()) {
 		return next();
