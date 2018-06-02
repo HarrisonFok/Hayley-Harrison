@@ -4,7 +4,22 @@
 // npm install body-parser express-session --save
 // npm install ejs --save
 
+/*
+RESTful routes
+
+name      url                  verb        description
+===================================================================================
+INDEX    /dogs                  GET         Display all campgrounds
+NEW      /dogs/new              GET         Displays form to make new dogs
+CREATE   /dogs/new              POST        Add new dog to database
+SHOW     /dogs/:id              GET         Shows info about one dog
+EDIT	 /dogs/:id/edit 		GET 		Show edit form for one dog
+UPDATE 	 /dogs/:id 				PUT			Update a particular dog, then redirect
+DESTROY  /dogs/:id 				DELETE		Delete a particular dog, then redirect
+*/
+
 var express = require("express");
+var app = express();
 var mongoose = require("mongoose");
 var passport = require("passport");
 var bodyParser = require("body-parser");
@@ -15,7 +30,6 @@ var User = require("./models/user");
 
 mongoose.connect("mongodb://localhost/hayley_harrison_website");
 
-var app = express();
 app.use(require("express-session")({
 	// will be used to encode/decode the sessions
 	secret: "Hayley and Harrison loves each other",
@@ -32,6 +46,17 @@ passport.use(new localStrategy(User.authenticate()));
 // Read session, take data from it, and encode/decode it
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+// MONGOOSE/MODEL CONFIG
+var blogSchema = new mongoose.Schema({
+	title: String,
+	image: String,
+	body: String,
+	created: {type: Date, default: Date.now}
+});
+
+// Compile the schema into the model
+var Blog = mongoose.model("Blog", blogSchema);
 
 // ===============================
 // ROUTES
