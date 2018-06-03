@@ -26,7 +26,23 @@ var bodyParser = require("body-parser");
 var localStrategy = require("passport-local");
 var passportLocalMongoose = require("passport-local-mongoose");
 var expressSession = require("express-session");
+// var Blog = require("./models/blog");
 var User = require("./models/user");
+
+var express = require("express");
+app = express();
+var bodyParser = require("body-parser");
+var mongoose = require("mongoose");
+
+// Model config
+var blogSchema = new mongoose.Schema({
+	title: String,
+	image: String,
+	body: String,
+	created: {type: Date, default: Date.now}
+});
+// Compile the schema into the model
+var Blog = mongoose.model("Blog", blogSchema);
 
 mongoose.connect("mongodb://localhost/hayley_harrison_website");
 
@@ -40,23 +56,13 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.static("public"));
 
 // Create new local strategy, using the User.authenticate method coming from passportLocalMongoose (on user.js)
 passport.use(new localStrategy(User.authenticate()));
 // Read session, take data from it, and encode/decode it
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
-// MONGOOSE/MODEL CONFIG
-var blogSchema = new mongoose.Schema({
-	title: String,
-	image: String,
-	body: String,
-	created: {type: Date, default: Date.now}
-});
-
-// Compile the schema into the model
-var Blog = mongoose.model("Blog", blogSchema);
 
 // ===============================
 // ROUTES
@@ -121,24 +127,36 @@ app.get("/logout", function(req, res){
 
 // index
 app.get("/photos/blogs", function(req, res){
-	res.render("photos/blogs");
+	// Connect to the database for the blog app
+	mongoose.connect("mongodb://localhost/HayleyAndHarrisonBlogApp");
+	// Find all the blogs, then redirect to the blogs page along with all the blogs
+	Blog.find({}, function(err, blogs){
+		if(err){
+			console.log(err);
+		} else {
+			res.render("blogsPage", {blogs: blogs});
+		}
+	});
 });
 
 // new 
 app.get("/photos/blogs/new", function(req, res){
+	// Connect to the database for the blog app
+	mongoose.connect("mongodb://localhost/HayleyAndHarrisonBlogApp");
+	// Redirect to the page for creating new posts
 	res.render("photos/new");
 });
 
 // create
 app.post("/photos/blogs", function(req, res){
-	console.log(req.body.blog);
-	// console.log(req.body.blog.title);
+	// Connect to the database for the blog app
+	mongoose.connect("mongodb://localhost/HayleyAndHarrisonBlogApp");
 	Blog.create(req.body.blog, function(err, newBlog){
 		if(err) {
 			res.render("new");
 		} else {
 			// redirect to index
-			res.redirect("blogs");
+			res.redirect("/blogs");
 		}
 	});
 });
