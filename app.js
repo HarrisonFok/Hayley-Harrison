@@ -139,7 +139,7 @@ app.get("/logout", function(req, res){
 // INDEX
 app.get("/photos/blogs", function(req, res){
 	// Connect to the database for the blog app
-	mongoose.connect("mongodb://localhost/HayleyAndHarrisonBlogApp");
+	// mongoose.connect("mongodb://localhost/HayleyAndHarrisonBlogApp");
 	// Find all the blogs, then redirect to the blogs page along with all the blogs
 	Blog.find({}, function(err, blogs){
 		if(err){
@@ -152,16 +152,12 @@ app.get("/photos/blogs", function(req, res){
 
 // NEW
 app.get("/photos/blogs/new", function(req, res){
-	// Connect to the database for the blog app
-	mongoose.connect("mongodb://localhost/HayleyAndHarrisonBlogApp");
 	// Redirect to the page for creating new posts
 	res.render("photos/new");
 });
 
 // CREATE
 app.post("/photos/blogs", function(req, res){
-	// Connect to the database for the blog app
-	mongoose.connect("mongodb://localhost/HayleyAndHarrisonBlogApp");
 	// Create a blog
 	Blog.create(req.body.blog, function(err, newBlog){
 		if(err) {
