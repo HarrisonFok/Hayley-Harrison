@@ -5,7 +5,13 @@
 		<!-- https://cdnjs.com/libraries/semantic-ui -->
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
 		<!-- will look into the public directory -->
-		<link rel="stylesheet" type="text/css" href="stylesheets/app.css">
+		<style type="text/css">
+			body {
+				background: #E55D87;  /* fallback for old browsers */
+				background: -webkit-linear-gradient(to right, #5FC3E4, #E55D87);  /* Chrome 10-25, Safari 5.1-6 */
+				background: linear-gradient(to right, #5FC3E4, #E55D87); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+			}
+		</style>
 	</head>
 	<body>
 <!-- 		<div class="ui fixed inverted menu">
@@ -17,7 +23,7 @@
 		</div>-->
 
  		<div class="ui violet three item inverted menu">
-		  <a class="active item">
+		  <a class="active item" href="/photos/blogs">
 		  	<i class="hand point left icon"></i>
 		    Home
 		  </a>

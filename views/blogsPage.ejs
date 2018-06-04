@@ -1,14 +1,34 @@
 <% include ./partials/header %>
 
+<style>
+	a {
+		color: yellow;
+	}
+
+	h1 {
+		margin-left: 650px;
+		color: #ff9933;
+	}
+</style>
+
 <h1>Blogs Page</h1>
 
 <% blogs.forEach(function(blog) { %>
-	<div>
-		<h2><%= blog.title %></h2>
-		<img src="<%=blog.image %>">
-		<span><%=blog.created %></span>
-		<p><%=blog.body %></p>
-		<a href="/photos/blogs/<%= blog._id %>">Read More</a>
+	<div class="ui main text container segment">
+		<div class="ui huge blue header"><h3><%= blog.title %></h3></div>
+
+		<div class="ui top attached">
+			<div class="item">
+				<img class="ui centered circular image" src="<%=blog.image %>">
+				<div class="content">
+					<span><%=blog.created.toDateString() %></span>
+				</div>
+				<div class="description">
+					<p><%-blog.body %></p>
+				</div>
+				<button class="ui green button" ><a href="/photos/blogs/<%= blog._id %>">Read More</a></button>
+			</div>
+		</div>
 	</div>
 <% }) %>
 

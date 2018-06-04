@@ -21,6 +21,11 @@ UPDATE 	 /dogs/:id 				PUT			Update a particular dog, then redirect
 DESTROY  /dogs/:id 				DELETE		Delete a particular dog, then redirect
 */
 
+/*
+The stuff that makes a chunk of things look nice is from Views -> Item on
+https://semantic-ui.com/elements/segment.html
+*/
+
 var express = require("express");
 var app = express();
 var mongoose = require("mongoose");
@@ -113,7 +118,7 @@ app.get("/login", function(req, res){
 });
 
 app.post("/login", passport.authenticate("local", {
-	successRedirect: "/home_page",
+	successRedirect: "/photos/blogs",
 	failureRedirect: "/login"
 }), function(req, res){
 });

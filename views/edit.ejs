@@ -1,0 +1,8 @@
+<h1>EDIT <%=foundBlog.title %></h1>
+
+<form action="/photos/blogs/<%=foundBlog._id %>?_method=PUT" method="POST">
+	<input type="text" name="blog[title]" value="<%=foundBlog.title %>">
+	<input type="text" name="blog[image]" value="<%=foundBlog.image %>">
+	<input type="text" name="blog[body]" value="blog post goes here">
+	<input type="submit">
+</form>
