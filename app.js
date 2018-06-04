@@ -4,12 +4,15 @@
 // npm install body-parser express-session --save
 // npm install ejs --save
 
+// EDIT:
+// npm install method-override --save
+
 /*
-RESTful routes
+RESTful routes - example by Colt Steele
 
 name      url                  verb        description
 ===================================================================================
-INDEX    /dogs                  GET         Display all campgrounds
+INDEX    /dogs                  GET         Display all dogs
 NEW      /dogs/new              GET         Displays form to make new dogs
 CREATE   /dogs/new              POST        Add new dog to database
 SHOW     /dogs/:id              GET         Shows info about one dog
@@ -26,6 +29,7 @@ var bodyParser = require("body-parser");
 var localStrategy = require("passport-local");
 var passportLocalMongoose = require("passport-local-mongoose");
 var expressSession = require("express-session");
+var methodOverride = require("method-override");
 // var Blog = require("./models/blog");
 var User = require("./models/user");
 
@@ -54,6 +58,8 @@ app.use(require("express-session")({
 }));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
+// what it should look for in the URL to override a method
+app.use(methodOverride("_method"));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static("public"));
@@ -125,7 +131,7 @@ app.get("/logout", function(req, res){
 // BLOGS ROUTES
 // ===============================
 
-// index
+// INDEX
 app.get("/photos/blogs", function(req, res){
 	// Connect to the database for the blog app
 	mongoose.connect("mongodb://localhost/HayleyAndHarrisonBlogApp");
@@ -139,7 +145,7 @@ app.get("/photos/blogs", function(req, res){
 	});
 });
 
-// new 
+// NEW
 app.get("/photos/blogs/new", function(req, res){
 	// Connect to the database for the blog app
 	mongoose.connect("mongodb://localhost/HayleyAndHarrisonBlogApp");
@@ -147,16 +153,68 @@ app.get("/photos/blogs/new", function(req, res){
 	res.render("photos/new");
 });
 
-// create
+// CREATE
 app.post("/photos/blogs", function(req, res){
 	// Connect to the database for the blog app
 	mongoose.connect("mongodb://localhost/HayleyAndHarrisonBlogApp");
+	// Create a blog
 	Blog.create(req.body.blog, function(err, newBlog){
 		if(err) {
 			res.render("new");
 		} else {
 			// redirect to index
-			res.redirect("/blogs");
+			res.redirect("./blogs");
+		}
+	});
+});
+
+// SHOW - used when showing a specific blog
+app.get("/photos/blogs/:id", function(req, res){
+	// Find the blog and transfer to the show page if found. Otherwise, redirect to photos/blog
+	Blog.findById(req.params.id, function(err, foundBlog){
+		if(err){
+			res.redirect("/photos/blogs");
+		} else {
+			res.render("show", {foundBlog: foundBlog});
+		}
+	});
+});
+
+// EDIT
+app.get("/photos/blogs/:id/edit", function(req, res){
+	// Find the blog and transfer to the edit page if found. Otherwise, redirect to photos/blog
+	Blog.findById(req.params.id, function(err, foundBlog){
+		if(err){
+			res.redirect("/photos/blogs");
+		} else {
+			res.render("edit", {foundBlog: foundBlog});
+		}
+	});
+});
+
+// UPDATE
+app.put("/photos/blogs/:id", function(req, res){
+	// Blog.findByIdAndUpdate(id, newData, callBack)
+	// req.body.blog contains all the info in the form
+
+	// Find the blog and redirect to photos/blogs/particular_id if edited successfully. Otherwise,
+	// redirect to photos/blogs
+	Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog){
+		if(err){
+			res.redirect("/photos/blogs");
+		} else {
+			res.redirect("/photos/blogs/" + req.params.id);
+		}
+	});
+});
+
+// DELETE
+app.delete("/photos/blogs/:id", function(req, res){
+	Blog.findByIdAndRemove(req.params.id, function(err){
+		if(err){
+			res.redirect("/photos/blogs");
+		} else {
+			res.redirect("/photos/blogs");
 		}
 	});
 });

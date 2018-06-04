@@ -1,7 +1,8 @@
 <h1>NEW</h1>
 
-<% blogs.forEach(function(blog){ %>
-	<p><%= blog.image %></p>
-	<p><%= blog.title %></p>
-	<p><%= blog.description %></p>
-<% }) %>
+<form action="/photos/blogs" method="POST">
+	<input type="text" name="blog[title]" placeholder="title">
+	<input type="text" name="blog[image]" placeholder="image">
+	<input type="text" name="blog[body]" placeholder="blog post goes here">
+	<input type="submit">
+</form>
