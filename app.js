@@ -43,15 +43,25 @@ app = express();
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 
-// Model config
+// Blog model config
 var blogSchema = new mongoose.Schema({
 	title: String,
 	image: String,
 	body: String,
 	created: {type: Date, default: Date.now}
 });
-// Compile the schema into the model
+// Compile the blog schema into a model called "Blog"
 var Blog = mongoose.model("Blog", blogSchema);
+
+// Picture model config
+var picSchema = new mongoose.Schema({
+	title: String,
+	image: String,
+	description: String,
+	created: {type: Date, default: Date.now}
+});
+// Compile the pic schema into a model called "Pic"
+var Pic = mongoose.model("Pic", picSchema);
 
 mongoose.connect("mongodb://localhost/hayley_harrison_website");
 
@@ -133,13 +143,87 @@ app.get("/logout", function(req, res){
 });	
 
 // ===============================
+// PICTURES ROUTES
+// ===============================
+
+// INDEX
+app.get("/pictures", function(req, res){
+	// res.render("pictures/pictures");
+	Pic.find({}, function(err, pics){
+		if(err){
+			console.log(err);
+		} else {
+			res.render("pictures/pictures", {pics: pics});
+		}
+	});
+});
+
+// NEW 
+app.get("/pictures/newPic", function(req, res){
+	res.render("pictures/newPic");
+});	
+
+// CREATE
+app.post("/pictures", function(req, res){
+	Pic.create(req.body.pic, function(err, newPic){
+		if(err){
+			res.render("new");
+		} else {
+			res.redirect("./pictures");
+		}
+	});	
+});
+
+// SHOW
+app.get("/pictures/:id", function(req, res){
+	Pic.findById(req.params.id, function(err, foundPic){
+		if(err){
+			res.redirect("/pictures");
+		} else {
+			res.render("showPic", {foundPic: foundPic});
+		}
+	});
+});
+
+// EDIT
+app.get("/pictures/:id/edit", function(req, res){
+	Pic.findById(req.params.id, function(err, foundPic){
+		if(err){
+			res.send("Error");
+		} else {
+			res.render("editPic", {foundPic, foundPic});
+		}
+	});
+});
+
+// UPDATE
+app.put("/pictures/:id", function(req, res){
+	Pic.findByIdAndUpdate(req.params.id, req.body.pic, function(err, updatedPic){
+		if(err){
+			res.send("Error");
+		} else {
+			res.redirect("/pictures");
+		}
+	});
+});
+
+// DELETE
+app.delete("/pictures/:id", function(req, res){
+	Pic.findByIdAndRemove(req.params.id, function(err){
+		if(err){
+			res.redirect("/pictures");
+		} else {
+			res.redirect("/pictures");
+		}
+	})
+});
+
+// ===============================
 // BLOGS ROUTES
 // ===============================
 
 // INDEX
 app.get("/photos/blogs", function(req, res){
-	// Connect to the database for the blog app
-	// mongoose.connect("mongodb://localhost/HayleyAndHarrisonBlogApp");
 	// Find all the blogs, then redirect to the blogs page along with all the blogs
 	Blog.find({}, function(err, blogs){
 		if(err){
