@@ -44,6 +44,7 @@ var Pic = require("./models/pic");
 // Require controllers
 // var authController = require("./controllers/auth");
 var blogController = require("./controllers/blog");
+var picController = require("./controllers/picture");
 
 mongoose.connect("mongodb://localhost/hayley_harrison_website");
 
@@ -126,82 +127,6 @@ app.get("/logout", function(req, res){
 	res.redirect("/");
 });	
 
-// ===============================
-// PICTURES ROUTES
-// ===============================
-
-// INDEX
-app.get("/pictures", isLoggedIn, function(req, res){
-	// res.render("pictures/pictures");
-	Pic.find({}, function(err, pics){
-		if(err){
-			console.log(err);
-		} else {
-			res.render("pictures/pictures", {pics: pics});
-		}
-	});
-});
-
-// NEW 
-app.get("/pictures/newPic", isLoggedIn, function(req, res){
-	res.render("pictures/newPic");
-});	
-
-// CREATE
-app.post("/pictures", isLoggedIn, function(req, res){
-	Pic.create(req.body.pic, function(err, newPic){
-		if(err){
-			res.render("new");
-		} else {
-			res.redirect("./pictures");
-		}
-	});	
-});
-
-// SHOW
-app.get("/pictures/:id", isLoggedIn, function(req, res){
-	Pic.findById(req.params.id, function(err, foundPic){
-		if(err){
-			res.redirect("/pictures");
-		} else {
-			res.render("showPic", {foundPic: foundPic});
-		}
-	});
-});
-
-// EDIT
-app.get("/pictures/:id/edit", isLoggedIn, function(req, res){
-	Pic.findById(req.params.id, function(err, foundPic){
-		if(err){
-			res.send("Error");
-		} else {
-			res.render("editPic", {foundPic, foundPic});
-		}
-	});
-});
-
-// UPDATE
-app.put("/pictures/:id", isLoggedIn, function(req, res){
-	Pic.findByIdAndUpdate(req.params.id, req.body.pic, function(err, updatedPic){
-		if(err){
-			res.send("Error");
-		} else {
-			res.redirect("/pictures");
-		}
-	});
-});
-
-// DELETE
-app.delete("/pictures/:id", isLoggedIn, function(req, res){
-	Pic.findByIdAndRemove(req.params.id, function(err){
-		if(err){
-			res.redirect("/pictures");
-		} else {
-			res.redirect("/pictures");
-		}
-	})
-});
-
 function isLoggedIn(req, res, next){
 	if(req.isAuthenticated()) {
 		return next();
@@ -211,6 +136,8 @@ function isLoggedIn(req, res, next){
 
 // Use the blog controller
 app.use(blogController);
+// Use the pic controller
+app.use(picController);
 
 app.listen("3000", function(){
 	console.log("Hayley-Harrison server running...");
