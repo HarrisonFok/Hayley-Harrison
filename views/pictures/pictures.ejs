@@ -1,4 +1,10 @@
+<% include ../partials/header %>
+
 <h1>Pictures Page</h1>
+
+<div id="addNewPicBtn">
+	<button class="ui yellow button" ><a href="/pictures/newPic">Add New Picture</a></button>
+</div>
 
 <style>
 body {
@@ -6,19 +12,39 @@ body {
 	background: -webkit-linear-gradient(to right, #F09819, #FF512F);  /* Chrome 10-25, Safari 5.1-6 */
 	background: linear-gradient(to right, #F09819, #FF512F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */	
 }
+
+.item {
+	background: lightblue;
+}
+
+h1 {
+	margin-left: 650px;
+}
+
+#addNewPicBtn {
+	margin-left: 150px;
+	position: fixed;
+}
 </style>
 
 <% pics.forEach(function(pic) { %>
-	<div>
-		<img src="<%= pic.image %>" >
-		<a href="/pictures/<%= pic._id %>">Read More</a>
+	<div class="ui main text container segment">
+		<div class="ui top attached">
+			<div class="item">
+				<img class="ui centered circular image" src="<%=pic.image %>">
+				<div class="content">
+					<span><%=pic.created.toDateString() %></span>
+				</div>
 
-		<a href="/pictures/<%= pic._id %>/edit">Edit</a>
+				<button class="ui green button" ><a href="/pictures/<%= pic._id %>">Read More</a></button>
+				<button class="ui orange button" ><a href="/pictures/<%= pic._id %>/edit">Edit</a></button>
 
-		<form action="/pictures/<%= pic._id %>?_method=DELETE" method="POST">
-			<button>Delete</button>
-		</form>
+				<form action="/pictures/<%= pic._id %>?_method=DELETE" method="POST">
+					<button class="ui red button">Delete</button>
+				</form>
+			</div>
+		</div>
 	</div>
 <% }) %>
 
-<a href="/pictures/newPic"><button>Add New Picture</button></a>
+<% include ../partials/footer %>
