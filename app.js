@@ -35,33 +35,16 @@ var localStrategy = require("passport-local");
 var passportLocalMongoose = require("passport-local-mongoose");
 var expressSession = require("express-session");
 var methodOverride = require("method-override");
-// var Blog = require("./models/blog");
+
+// Require Models
+var Blog = require("./models/blog");
 var User = require("./models/user");
+var Pic = require("./models/pic");
 
 var express = require("express");
 app = express();
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
-
-// Blog model config
-var blogSchema = new mongoose.Schema({
-	title: String,
-	image: String,
-	body: String,
-	created: {type: Date, default: Date.now}
-});
-// Compile the blog schema into a model called "Blog"
-var Blog = mongoose.model("Blog", blogSchema);
-
-// Picture model config
-var picSchema = new mongoose.Schema({
-	title: String,
-	image: String,
-	description: String,
-	created: {type: Date, default: Date.now}
-});
-// Compile the pic schema into a model called "Pic"
-var Pic = mongoose.model("Pic", picSchema);
 
 mongoose.connect("mongodb://localhost/hayley_harrison_website");
 
