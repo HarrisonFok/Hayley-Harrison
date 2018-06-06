@@ -25,13 +25,17 @@
 		margin-left: 150px;
 		position: fixed;
 	}
+
+	#pic {
+		height: 30%;
+	}
 </style>
 
 <% pics.forEach(function(pic) { %>
 	<div class="ui main text container segment">
 		<div class="ui top attached">
 			<div class="item">
-				<img class="ui centered circular image" src="<%=pic.image %>">
+				<img class="ui centered circular image" src="<%=pic.image %>" id="pic">
 				<div class="content">
 					<span><%=pic.created.toDateString() %></span>
 				</div>

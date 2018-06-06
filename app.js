@@ -147,7 +147,7 @@ app.get("/logout", function(req, res){
 // ===============================
 
 // INDEX
-app.get("/pictures", function(req, res){
+app.get("/pictures", isLoggedIn, function(req, res){
 	// res.render("pictures/pictures");
 	Pic.find({}, function(err, pics){
 		if(err){
@@ -159,12 +159,12 @@ app.get("/pictures", function(req, res){
 });
 
 // NEW 
-app.get("/pictures/newPic", function(req, res){
+app.get("/pictures/newPic", isLoggedIn, function(req, res){
 	res.render("pictures/newPic");
 });	
 
 // CREATE
-app.post("/pictures", function(req, res){
+app.post("/pictures", isLoggedIn, function(req, res){
 	Pic.create(req.body.pic, function(err, newPic){
 		if(err){
 			res.render("new");
@@ -175,7 +175,7 @@ app.post("/pictures", function(req, res){
 });
 
 // SHOW
-app.get("/pictures/:id", function(req, res){
+app.get("/pictures/:id", isLoggedIn, function(req, res){
 	Pic.findById(req.params.id, function(err, foundPic){
 		if(err){
 			res.redirect("/pictures");
@@ -186,7 +186,7 @@ app.get("/pictures/:id", function(req, res){
 });
 
 // EDIT
-app.get("/pictures/:id/edit", function(req, res){
+app.get("/pictures/:id/edit", isLoggedIn, function(req, res){
 	Pic.findById(req.params.id, function(err, foundPic){
 		if(err){
 			res.send("Error");
@@ -197,7 +197,7 @@ app.get("/pictures/:id/edit", function(req, res){
 });
 
 // UPDATE
-app.put("/pictures/:id", function(req, res){
+app.put("/pictures/:id", isLoggedIn, function(req, res){
 	Pic.findByIdAndUpdate(req.params.id, req.body.pic, function(err, updatedPic){
 		if(err){
 			res.send("Error");
@@ -208,7 +208,7 @@ app.put("/pictures/:id", function(req, res){
 });
 
 // DELETE
-app.delete("/pictures/:id", function(req, res){
+app.delete("/pictures/:id", isLoggedIn, function(req, res){
 	Pic.findByIdAndRemove(req.params.id, function(err){
 		if(err){
 			res.redirect("/pictures");
@@ -223,7 +223,7 @@ app.delete("/pictures/:id", function(req, res){
 // ===============================
 
 // INDEX
-app.get("/photos/blogs", function(req, res){
+app.get("/photos/blogs", isLoggedIn, function(req, res){
 	// Find all the blogs, then redirect to the blogs page along with all the blogs
 	Blog.find({}, function(err, blogs){
 		if(err){
@@ -235,13 +235,13 @@ app.get("/photos/blogs", function(req, res){
 });
 
 // NEW
-app.get("/photos/blogs/new", function(req, res){
+app.get("/photos/blogs/new", isLoggedIn, function(req, res){
 	// Redirect to the page for creating new posts
 	res.render("photos/new");
 });
 
 // CREATE
-app.post("/photos/blogs", function(req, res){
+app.post("/photos/blogs", isLoggedIn, function(req, res){
 	// Create a blog
 	Blog.create(req.body.blog, function(err, newBlog){
 		if(err) {
@@ -254,7 +254,7 @@ app.post("/photos/blogs", function(req, res){
 });
 
 // SHOW - used when showing a specific blog
-app.get("/photos/blogs/:id", function(req, res){
+app.get("/photos/blogs/:id", isLoggedIn, function(req, res){
 	// Find the blog and transfer to the show page if found. Otherwise, redirect to photos/blog
 	Blog.findById(req.params.id, function(err, foundBlog){
 		if(err){
@@ -266,7 +266,7 @@ app.get("/photos/blogs/:id", function(req, res){
 });
 
 // EDIT
-app.get("/photos/blogs/:id/edit", function(req, res){
+app.get("/photos/blogs/:id/edit", isLoggedIn, function(req, res){
 	// Find the blog and transfer to the edit page if found. Otherwise, redirect to photos/blog
 	Blog.findById(req.params.id, function(err, foundBlog){
 		if(err){
@@ -278,7 +278,7 @@ app.get("/photos/blogs/:id/edit", function(req, res){
 });
 
 // UPDATE
-app.put("/photos/blogs/:id", function(req, res){
+app.put("/photos/blogs/:id", isLoggedIn, function(req, res){
 	// Blog.findByIdAndUpdate(id, newData, callBack)
 	// req.body.blog contains all the info in the form
 
@@ -294,7 +294,7 @@ app.put("/photos/blogs/:id", function(req, res){
 });
 
 // DELETE
-app.delete("/photos/blogs/:id", function(req, res){
+app.delete("/photos/blogs/:id", isLoggedIn, function(req, res){
 	Blog.findByIdAndRemove(req.params.id, function(err){
 		if(err){
 			res.redirect("/photos/blogs");

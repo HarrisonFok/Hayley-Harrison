@@ -1,6 +1,29 @@
+<% include ./partials/header %>
+
+<style>
+	body {
+		background: #59C173;  /* fallback for old browsers */
+		background: -webkit-linear-gradient(to right, #5D26C1, #a17fe0, #59C173);  /* Chrome 10-25, Safari 5.1-6 */
+		background: linear-gradient(to right, #5D26C1, #a17fe0, #59C173); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	}
+
+	h1 {
+		padding-top: 50px;
+		padding-left: 650px;
+	}
+
+	form, img {
+		padding-left: 450px;
+	}
+</style>
+
 <h1>EDIT</h1>
+
+<img src="<%= foundPic.image %>">
 
 <form action="/pictures/<%= foundPic._id %>?_method=PUT" method="POST">
 	<input type="text" name="pic[image]" placeholder="image">
 	<input type="submit">
 </form>
+
+<% include ./partials/footer %>
