@@ -42,9 +42,9 @@ var User = require("./models/user");
 var Pic = require("./models/pic");
 
 // Require controllers
-// var authController = require("./controllers/auth");
 var blogController = require("./controllers/blog");
 var picController = require("./controllers/picture");
+// var authController = require("./controllers/auth");
 
 mongoose.connect("mongodb://localhost/hayley_harrison_website");
 
@@ -67,8 +67,6 @@ passport.use(new localStrategy(User.authenticate()));
 // Read session, take data from it, and encode/decode it
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
-// app.use(authController);
 
 // ===============================
 // ROUTES
@@ -138,6 +136,7 @@ function isLoggedIn(req, res, next){
 app.use(blogController);
 // Use the pic controller
 app.use(picController);
+// app.use(authController);
 
 app.listen("3000", function(){
 	console.log("Hayley-Harrison server running...");

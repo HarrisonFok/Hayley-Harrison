@@ -20,7 +20,7 @@ app.get("/home_page", isLoggedIn, function(req, res){
 // ===============================
 
 app.get("/register", function(req, res){
-	res.render("./views/register");
+	res.render("register");
 });
 
 app.post("/register", function(req, res){
@@ -28,7 +28,7 @@ app.post("/register", function(req, res){
 	User.register(new User({username: req.body.username}), req.body.password, function(err, user){
 		if(err){
 			console.log(err);
-			return res.render("./views/register");
+			return res.render("register");
 		}
 		// Log user in
 		passport.authenticate("local")(req, res, function(){
@@ -42,12 +42,12 @@ app.post("/register", function(req, res){
 // ===============================
 
 app.get("/login", function(req, res){
-	res.render("../views/login");
+	res.render("login");
 });
 
 app.post("/login", passport.authenticate("local", {
-	successRedirect: "../views/photos/blogs",
-	failureRedirect: "../views/login"
+	successRedirect: "/photos/blogs",
+	failureRedirect: "/login"
 }), function(req, res){
 });
 
@@ -64,7 +64,7 @@ function isLoggedIn(req, res, next){
 	if(req.isAuthenticated()) {
 		return next();
 	}
-	res.redirect("../views/login");
+	res.redirect("login");
 }
 
 module.exports = router;
