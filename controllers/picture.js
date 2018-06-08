@@ -41,7 +41,7 @@ router.get("/pictures/:id", function(req, res){
 		if(err){
 			res.redirect("/pictures");
 		} else {
-			console.log(foundPic);
+			// console.log(foundPic);
 			res.render("showPic", {foundPic: foundPic});
 		}
 	});

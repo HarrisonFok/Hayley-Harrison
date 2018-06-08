@@ -41,6 +41,6 @@
 
 <div id="commentsDiv">
 	<% foundPic.comments.forEach(function(comment){ %>
-		<p id="indComm"><%= comment.author %>: <%= comment.text %></p>
+		<p id="indComm"><strong><%= comment.author %>:</strong> <%= comment.text %></p>
 	<% }) %>
 </div>
