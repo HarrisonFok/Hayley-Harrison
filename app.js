@@ -40,12 +40,15 @@ var methodOverride = require("method-override");
 var Blog = require("./models/blog");
 var User = require("./models/user");
 var Pic = require("./models/pic");
+var Comment = require("./models/comment");
 
 // Require controllers
 var blogController = require("./controllers/blog");
 var picController = require("./controllers/picture");
-// var authController = require("./controllers/auth");
+var commentController = require("./controllers/comment");
+var authController = require("./controllers/auth");
 
+// Connect to the database of the website
 mongoose.connect("mongodb://localhost/hayley_harrison_website");
 
 app.use(require("express-session")({
@@ -68,62 +71,18 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// ===============================
-// ROUTES
-// ===============================
+// Require seeds file
+var seedDB = require("./seeds");
+// seedDB();
 
-app.get("/", function(req, res){
-	res.render("home");
-});
-
-app.get("/home_page", isLoggedIn, function(req, res){
-	res.render("home_page");
-});
-
-// ===============================
-// AUTH ROUTES
-// ===============================
-
-app.get("/register", function(req, res){
-	res.render("register");
-});
-
-app.post("/register", function(req, res){
-	// res.send("register post");
-	User.register(new User({username: req.body.username}), req.body.password, function(err, user){
-		if(err){
-			console.log(err);
-			return res.render("register");
-		}
-		// Log user in
-		passport.authenticate("local")(req, res, function(){
-			res.redirect("/secret");
-		});
-	});
-});
-
-// ===============================
-// LOGIN ROUTES
-// ===============================
-
-app.get("/login", function(req, res){
-	res.render("login");
-});
-
-app.post("/login", passport.authenticate("local", {
-	successRedirect: "/photos/blogs",
-	failureRedirect: "/login"
-}), function(req, res){
-});
-
-// ===============================
-// LOGOUT ROUTE
-// ===============================
-app.get("/logout", function(req, res){
-	// passport is destroying all user data from the session
-	req.logout();
-	res.redirect("/");
-});	
+// Use the blog controller
+app.use(blogController);
+// Use the pic controller
+app.use(picController);
+// Use the comment controller
+app.use(commentController);
+// Use the auth controller
+app.use(authController);
 
 function isLoggedIn(req, res, next){
 	if(req.isAuthenticated()) {
@@ -131,12 +90,6 @@ function isLoggedIn(req, res, next){
 	}
 	res.redirect("/login");
 }
-
-// Use the blog controller
-app.use(blogController);
-// Use the pic controller
-app.use(picController);
-// app.use(authController);
 
 app.listen("3000", function(){
 	console.log("Hayley-Harrison server running...");

@@ -17,3 +17,10 @@
 <h1>SHOW image </h1>
 
 <img src="<%= foundPic.image %>">
+<p><%= foundPic.description %></p>
+
+<p><a href="/pictures/<%= foundPic._id %>/comments/new" class="btn btn-success">Add New Comment</a></p>
+
+<% foundPic.comments.forEach(function(comment){ %>
+	<p><%= comment.author %> - <%= comment.text %></p>
+<% }) %>

@@ -7,11 +7,11 @@ var User = require("../models/user");
 // ROUTES
 // ===============================
 
-app.get("/", function(req, res){
+router.get("/", function(req, res){
 	res.render("home");
 });
 
-app.get("/home_page", isLoggedIn, function(req, res){
+router.get("/home_page", isLoggedIn, function(req, res){
 	res.render("home_page");
 });
 
@@ -19,11 +19,11 @@ app.get("/home_page", isLoggedIn, function(req, res){
 // AUTH ROUTES
 // ===============================
 
-app.get("/register", function(req, res){
+router.get("/register", function(req, res){
 	res.render("register");
 });
 
-app.post("/register", function(req, res){
+router.post("/register", function(req, res){
 	// res.send("register post");
 	User.register(new User({username: req.body.username}), req.body.password, function(err, user){
 		if(err){
@@ -41,11 +41,11 @@ app.post("/register", function(req, res){
 // LOGIN ROUTES
 // ===============================
 
-app.get("/login", function(req, res){
+router.get("/login", function(req, res){
 	res.render("login");
 });
 
-app.post("/login", passport.authenticate("local", {
+router.post("/login", passport.authenticate("local", {
 	successRedirect: "/photos/blogs",
 	failureRedirect: "/login"
 }), function(req, res){
@@ -54,7 +54,7 @@ app.post("/login", passport.authenticate("local", {
 // ===============================
 // LOGOUT ROUTE
 // ===============================
-app.get("/logout", function(req, res){
+router.get("/logout", function(req, res){
 	// passport is destroying all user data from the session
 	req.logout();
 	res.redirect("/");

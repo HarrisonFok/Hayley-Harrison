@@ -35,11 +35,13 @@ router.post("/pictures", isLoggedIn, function(req, res){
 });
 
 // SHOW
-router.get("/pictures/:id", isLoggedIn, function(req, res){
-	Pic.findById(req.params.id, function(err, foundPic){
+router.get("/pictures/:id", function(req, res){
+	// Find the picture with the right id and populate the comments array on it
+	Pic.findById(req.params.id).populate("comments").exec(function(err, foundPic){
 		if(err){
 			res.redirect("/pictures");
 		} else {
+			console.log(foundPic);
 			res.render("showPic", {foundPic: foundPic});
 		}
 	});
