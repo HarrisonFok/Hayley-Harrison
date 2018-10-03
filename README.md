@@ -5,6 +5,6 @@ This is a website I made for my girlfriend and I to record our memories. This we
 Technology used: Node.js, MongoDB
 
 Dependencies:
-1) Run mongo demon
-2) Run mongo server
-3) Start the app by "node app.js"
+1) Run mongo demon (mongod) in the home page
+(Run mongo server (./bin/mongo) in the mongodb directory)
+2) Start the app by "node app.js"
