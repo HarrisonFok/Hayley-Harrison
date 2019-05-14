@@ -84,13 +84,6 @@ app.use(commentController);
 // Use the auth controller
 app.use(authController);
 
-function isLoggedIn(req, res, next){
-	if(req.isAuthenticated()) {
-		return next();
-	}
-	res.redirect("/login");
-}
-
 app.listen("3000", function(){
 	console.log("Hayley-Harrison server running...");
 });

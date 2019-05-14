@@ -2,11 +2,12 @@ var express = require("express");
 var router = express.Router();
 var Comment = require("../models/comment");
 var Pic = require("../models/pic");
+var middleware = require("../middleware");
 
 // ===============================
 // COMMENTS ROUTES
 // ===============================
-router.get("/pictures/:id/comments/new", isLoggedIn, function(req, res){
+router.get("/pictures/:id/comments/new", middleware.isLoggedIn, function(req, res){
 	Pic.findById(req.params.id, function(err, foundPic){
 		if(err){
 			console.log(err);
@@ -16,7 +17,7 @@ router.get("/pictures/:id/comments/new", isLoggedIn, function(req, res){
 	});
 });
 
-router.post("/pictures/:id/comments", isLoggedIn, function(req, res){
+router.post("/pictures/:id/comments", middleware.isLoggedIn, function(req, res){
 	// Look up picture using id
 	Pic.findById(req.params.id, function(err, foundPic){
 		if(err){
@@ -38,12 +39,5 @@ router.post("/pictures/:id/comments", isLoggedIn, function(req, res){
 		}
 	});
 });
-
-function isLoggedIn(req, res, next){
-	if(req.isAuthenticated()) {
-		return next();
-	}
-	res.redirect("/login");
-}
 
 module.exports = router;

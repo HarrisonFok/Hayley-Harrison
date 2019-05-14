@@ -32,7 +32,7 @@ router.post("/register", function(req, res){
 		}
 		// Log user in
 		passport.authenticate("local")(req, res, function(){
-			res.redirect("/secret");
+			res.redirect("home_page");
 		});
 	});
 });
